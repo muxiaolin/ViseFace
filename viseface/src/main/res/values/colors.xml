@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--外面圈背景颜色-->
+    <color name="face_view_bg">#FFFFFFFF</color>
+    <!--圆弧背景色-->
+    <color name="arc_bg_color">#DFE7EB</color>
+    <color name="arc_sweep_start_color">#D4EFFF</color>
+    <color name="arc_sweep_end_color">#056CB7</color>
+    <!--提示语背景颜色-->
+    <color name="tip_text_bg_color">#80000000</color>
+</resources>

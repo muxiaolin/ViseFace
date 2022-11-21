@@ -1,0 +1,26 @@
+<resources>
+    <!--人脸识别界面-->
+    <declare-styleable name="CameraFaceView">
+        <!--中心圆屏幕边距-->
+        <attr name="circle_margin" format="dimension"/>
+        <!--圆弧宽度-->
+        <attr name="arc_width" format="dimension"/>
+        <!--圆弧背景色-->
+        <attr name="arc_bg_color" format="color"/>
+        <!--圆弧渐变起始颜色-->
+        <attr name="arc_sweep_start_color" format="color"/>
+        <!--圆弧渐变结束颜色-->
+        <attr name="arc_sweep_end_color" format="color"/>
+        <!--文本背景颜色-->
+        <attr name="tip_text_bg_color" format="color"/>
+        <!--文本-->
+        <attr name="tip_text" format="string"/>
+        <!--文本颜色-->
+        <attr name="tip_text_color" format="color"/>
+        <!--文字大小-->
+        <attr name="tip_text_size" format="dimension"/>
+        <!--动画时长间隔-->
+        <attr name="face_anim_duration" format="integer" />
+
+    </declare-styleable>
+</resources>

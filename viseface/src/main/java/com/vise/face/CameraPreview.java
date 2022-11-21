@@ -10,7 +10,6 @@ import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.vise.log.ViseLog;
 
 /**
  * @Description: 自定义相机
@@ -230,6 +229,18 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public CameraPreview setMinCameraPixels(long mMinCameraPixels) {
         this.mMinCameraPixels = mMinCameraPixels;
         return this;
+    }
+
+    public void setCameraWidth(int mCameraWidth) {
+        if (mCameraWidth != 0) {
+            this.mCameraWidth = mCameraWidth;
+        }
+    }
+
+    public void setCameraHeight(int mCameraHeight) {
+        if (mCameraHeight != 0) {
+            this.mCameraHeight = mCameraHeight;
+        }
     }
 
     public int getCameraHeight() {

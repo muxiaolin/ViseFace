@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.vise.log.ViseLog;
 
 /**
  * @Description: 绘制人脸识别框

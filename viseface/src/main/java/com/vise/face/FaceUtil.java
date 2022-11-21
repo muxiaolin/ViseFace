@@ -10,11 +10,13 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Process;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.Surface;
 import android.widget.FrameLayout;
 
-import com.vise.log.ViseLog;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -236,8 +238,7 @@ public class FaceUtil {
      * @param height
      * @param <T>
      */
-    public static <T> int setCameraParams(CameraPreview cameraPreview, IFaceDetector<T> faceDetector, Camera camera,
-                                          int cameraId, int width, int height) {
+    public static <T> int setCameraParams(CameraPreview cameraPreview, IFaceDetector<T> faceDetector, Camera camera, int cameraId, int width, int height) {
         if (camera == null) {
             return 0;
         }
@@ -245,13 +246,13 @@ public class FaceUtil {
         Camera.Parameters parameters = camera.getParameters();
         List<Camera.Size> pictureSizeList = parameters.getSupportedPictureSizes();
         // 从列表中选择合适的分辨率
-        Point pictureSize = FaceUtil.findBestResolution(pictureSizeList, new Point(width, height), true, 0.15f);
+        Point pictureSize = findBestResolution(pictureSizeList, new Point(width, height), true, 0.15f);
         // 根据选出的PictureSize重新设置SurfaceView大小
         parameters.setPictureSize(pictureSize.x, pictureSize.y);
 
         // 获取摄像头支持的PreviewSize列表
         List<Camera.Size> previewSizeList = parameters.getSupportedPreviewSizes();
-        Point preSize = FaceUtil.findBestResolution(previewSizeList, new Point(width, height), false, 0.15f);
+        Point preSize = findBestResolution(previewSizeList, new Point(width, height), false, 0.15f);
         parameters.setPreviewSize(preSize.x, preSize.y);
 
         float w = preSize.x;
@@ -260,18 +261,27 @@ public class FaceUtil {
         int tempW = (int) (height * (h / w));
         int tempH = (int) (width * (w / h));
         if (cameraPreview != null) {
-            if (tempW >= width) {
-                cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(tempW, height));
-                scale = tempW / h;
-            } else if (tempH >= height) {
-                cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(width, tempH));
-                scale = tempH / w;
-            } else {
-                cameraPreview.setLayoutParams(new FrameLayout.LayoutParams(width, height));
-            }
+            //todo 2022/9/29
+//            if (tempW >= width) {
+//                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(tempW, height);
+//                params.gravity = Gravity.CENTER_HORIZONTAL;
+//                cameraPreview.setLayoutParams(params);
+//                scale = tempW / h;
+//            } else if (tempH >= height) {
+//                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width, tempH);
+//                params.gravity = Gravity.CENTER_HORIZONTAL;
+//                cameraPreview.setLayoutParams(params);
+//                scale = tempH / w;
+//            } else {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width, height);
+            params.gravity = Gravity.CENTER_HORIZONTAL;
+            cameraPreview.setLayoutParams(params);
+//            }
         }
+        ViseLog.d("w=" + w + ", h=" + h + ", scale=" + scale);
+        ViseLog.d("tempW=" + tempW + ", tempH=" + tempH);
         if (faceDetector != null) {
-            faceDetector.setZoomRatio(5f * scale);
+            faceDetector.setZoomRatio(5 * scale);
             faceDetector.setPreviewWidth((int) w);
             faceDetector.setPreviewHeight((int) h);
         }
@@ -335,5 +345,114 @@ public class FaceUtil {
         }
         return result;
     }
+
+    public static boolean isBlank(CharSequence cs) {
+        int strLen;
+        if (cs == null || (strLen = cs.length()) == 0) {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if (Character.isWhitespace(cs.charAt(i)) == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isNullString(String str) {
+        return (null == str || isBlank(str.trim()) || "null".equals(str.trim().toLowerCase())) ? true : false;
+    }
+
+    public static String parseStr(String value) {
+        if (isNullString(value)) return "0.0";
+        DecimalFormat df = new DecimalFormat("######0.0");
+        double mvalue = Double.parseDouble(value);
+        return df.format(mvalue);
+    }
+
+    public static String parseStr(double value) {
+        if (value == 0) return "0.0";
+        DecimalFormat df = new DecimalFormat("######0.0");
+        return df.format(Double.parseDouble(String.valueOf(value)));
+    }
+
+    public static int getScreenHeight(Context context) {
+        DisplayMetrics dm = getDisplayMetrics(context);
+        return dm.heightPixels;
+    }
+
+    /**
+     * 获取屏幕宽度DPI
+     *
+     * @param context
+     * @return
+     */
+    public static float getScreenWidthDpi(Context context) {
+        DisplayMetrics dm = getDisplayMetrics(context);
+        return dm.xdpi;
+    }
+
+    /**
+     * 获取屏幕高度DPI
+     *
+     * @param context
+     * @return
+     */
+    public static float getScreenHeightDpi(Context context) {
+        DisplayMetrics dm = getDisplayMetrics(context);
+        return dm.ydpi;
+    }
+
+    /**
+     * 获取屏幕密度（像素比例：0.75/1.0/1.5/2.0）
+     *
+     * @param context
+     * @return
+     */
+    public static float getScreenDensity(Context context) {
+        DisplayMetrics dm = getDisplayMetrics(context);
+        return dm.density;
+    }
+
+    /**
+     * 获取屏幕密度（每寸像素：120/160/240/320）
+     *
+     * @param context
+     * @return
+     */
+    public static int getScreenDensityDpi(Context context) {
+        DisplayMetrics dm = getDisplayMetrics(context);
+        return dm.densityDpi;
+    }
+
+    public static DisplayMetrics getDisplayMetrics(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return dm;
+    }
+
+    /**
+     * 根据手机的分辨率从dp 到 px(像素)
+     */
+    public static int dp2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    /**
+     * 根据手机的分辨率从px 到 dp
+     */
+    public static int px2dp(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    /**
+     * 将sp值转换为px值，保证文字大小不变
+     */
+    public static int sp2px(Context context, float spValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
+
 
 }

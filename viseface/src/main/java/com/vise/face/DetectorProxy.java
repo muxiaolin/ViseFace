@@ -107,6 +107,28 @@ public class DetectorProxy<T> {
         }
     }
 
+
+    /**
+     * @param mCameraWidth
+     * @return
+     */
+    public void setCameraWidth(int mCameraWidth) {
+        if (mCameraPreview != null) {
+            mCameraPreview.setCameraWidth(mCameraWidth);
+        }
+    }
+
+    /**
+     * @param mCameraHeight
+     * @return
+     */
+    public void setCameraHeight(int mCameraHeight) {
+        if (mCameraPreview != null) {
+            mCameraPreview.setCameraHeight(mCameraHeight);
+        }
+    }
+
+
     /**
      * 设置检测最大人脸数量
      *
@@ -213,6 +235,8 @@ public class DetectorProxy<T> {
         private int mFaceRectColor = Color.rgb(255, 203, 15);
         private boolean mDrawFaceRect = false;
         private boolean mFaceIsRect = false;
+        private int mCameraWidth;
+        private int mCameraHeight;
 
         public Builder(CameraPreview mCameraPreview) {
             this.mCameraPreview = mCameraPreview;
@@ -268,6 +292,18 @@ public class DetectorProxy<T> {
             return this;
         }
 
+
+        public Builder setCameraWidth(int mCameraWidth) {
+            this.mCameraWidth = mCameraWidth;
+            return this;
+        }
+
+        public Builder setCameraHeight(int mCameraHeight) {
+            this.mCameraHeight = mCameraHeight;
+            return this;
+        }
+
+
         public DetectorProxy build() {
             DetectorProxy detectorProxy = new DetectorProxy(mCameraPreview);
             detectorProxy.setFaceDetector(mFaceDetector);
@@ -275,6 +311,9 @@ public class DetectorProxy<T> {
             detectorProxy.setDataListener(mDataListener);
             detectorProxy.setMaxFacesCount(mMaxFacesCount);
             detectorProxy.setMinCameraPixels(mMinCameraPixels);
+            detectorProxy.setCameraWidth(mCameraWidth);
+            detectorProxy.setCameraHeight(mCameraHeight);
+
             if (mFaceRectView != null && mDrawFaceRect) {
                 detectorProxy.setFaceRectView(mFaceRectView);
                 detectorProxy.setDrawFaceRect(mDrawFaceRect);

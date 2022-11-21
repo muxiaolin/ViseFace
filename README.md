@@ -1,6 +1,9 @@
 # ViseFace
 简易人脸检测库，不依赖三方库，可快速接入人脸检测功能。
 
+implementation "io.github.muxiaolin:viseface:1.1.0"
+
+
 [![License](https://img.shields.io/badge/License-Apache--2.0-green.svg)](https://github.com/xiaoyaoyou1212/ViseFace/blob/master/LICENSE) [![API](https://img.shields.io/badge/API-9%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=9)
 
 - 项目地址：[https://github.com/xiaoyaoyou1212/ViseFace](https://github.com/xiaoyaoyou1212/ViseFace)

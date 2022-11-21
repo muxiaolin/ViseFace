@@ -10,7 +10,6 @@ import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.media.FaceDetector;
 
-import com.vise.log.ViseLog;
 
 import java.io.ByteArrayOutputStream;
 
@@ -110,13 +109,13 @@ public class SystemFaceDetector<T> extends BaseFaceDetector<T> {
                 face.getMidPoint(midEyesPoint);
                 midEyesPoint.x = midEyesPoint.x * mZoomRatio;
                 midEyesPoint.y = midEyesPoint.y * mZoomRatio;
-                ViseLog.i("eyeDistance:" + eyeDistance + ",midEyesPoint.x:" + midEyesPoint.x
-                        + ",midEyesPoint.y:" + midEyesPoint.y);
+//                ViseLog.i("eyeDistance:" + eyeDistance + ",midEyesPoint.x:" + midEyesPoint.x
+//                        + ",midEyesPoint.y:" + midEyesPoint.y);
                 faceRectList[i].set((int) (midEyesPoint.x - eyeDistance),
                         (int) (midEyesPoint.y - eyeDistance),
                         (int) (midEyesPoint.x + eyeDistance),
                         (int) (midEyesPoint.y + eyeDistance));
-                ViseLog.i("FaceRectList[" + i + "]:" + faceRectList[i]);
+//                ViseLog.i("FaceRectList[" + i + "]:" + faceRectList[i]);
             }
         }
         int width = (int) (mPreviewHeight * mZoomRatio / 5);
